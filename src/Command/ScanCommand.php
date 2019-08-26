@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Exception\CloudflareException;
 use App\Helper\CloudflareHelper;
 use App\Model\DNSRecord;
 use App\Model\SymfonyStyle;
