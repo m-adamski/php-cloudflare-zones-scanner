@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+
+use App\Command\ScanCommand;
+use App\Helper\CloudflareHelper;
+use Symfony\Component\Console\Application;
+
+require __DIR__ . "/../vendor/autoload.php";
+
+// Define dependencies
+$cloudflareHelper = new CloudflareHelper();
+
+// Define application
+$application = new Application();
+$application->add(
+    new ScanCommand($cloudflareHelper)
+);
+
+// Run application
+$application->run();

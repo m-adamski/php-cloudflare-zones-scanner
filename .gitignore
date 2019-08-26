@@ -1,0 +1,5 @@
+/.idea/
+/config/cloudflare.json
+/data/*
+!/data/.gitkeep
+/vendor/
