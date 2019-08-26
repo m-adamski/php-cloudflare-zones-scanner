@@ -3,17 +3,19 @@
 
 use App\Command\ScanCommand;
 use App\Helper\CloudflareHelper;
+use App\Model\SpreadsheetHelper;
 use Symfony\Component\Console\Application;
 
 require __DIR__ . "/../vendor/autoload.php";
 
 // Define dependencies
 $cloudflareHelper = new CloudflareHelper();
+$spreadsheetHelper = new SpreadsheetHelper();
 
 // Define application
 $application = new Application();
 $application->add(
-    new ScanCommand($cloudflareHelper)
+    new ScanCommand($cloudflareHelper, $spreadsheetHelper)
 );
 
 // Run application

@@ -25,9 +25,7 @@ class CloudflareHelper {
     public function getCloudflareZones(): array {
 
         // Get Request content
-        $responseResult = $this->sendRequest(
-            new Request("GET", "zones")
-        );
+        $responseResult = $this->sendRequest("zones");
 
         // Define response collection
         $toResponse = [];
@@ -52,9 +50,7 @@ class CloudflareHelper {
     public function getCloudflareDNSRecords(Zone $zone) {
 
         // Get Request content
-        $responseResult = $this->sendRequest(
-            new Request("GET", "zones/" . $zone->getZoneID() . "/dns_records")
-        );
+        $responseResult = $this->sendRequest("zones/" . $zone->getZoneID() . "/dns_records");
 
         // Define response collection
         $toResponse = [];
@@ -107,23 +103,39 @@ class CloudflareHelper {
     /**
      * Send specified Request.
      *
-     * @param Request $request
+     * @param string $requestURI
+     * @param int    $page
+     * @param int    $perPage
      * @return array
      * @throws CloudflareException
      */
-    private function sendRequest(Request $request): array {
+    private function sendRequest(string $requestURI, int $page = 1, int $perPage = 10): array {
         if (null !== ($configContent = $this->readConfig())) {
             if (is_array($configContent) && array_key_exists("authToken", $configContent)) {
                 $authToken = $configContent["authToken"];
 
+                // Define Request
+                $currentRequest = new Request("GET", sprintf("%s?page=%d&per_page=%d", $requestURI, $page, $perPage));
+
                 try {
-                    if (null !== ($currentResponse = $this->getClient($authToken)->send($request))) {
+                    if (null !== ($currentResponse = $this->getClient($authToken)->send($currentRequest))) {
                         if (200 === $currentResponse->getStatusCode()) {
                             $responseContent = $currentResponse->getBody()->getContents();
 
                             if (null !== ($responseContent = json_decode($responseContent, true))) {
-                                if (is_array($responseContent) && array_key_exists("result", $responseContent)) {
-                                    return $responseContent["result"];
+                                if (is_array($responseContent) && array_key_exists("result", $responseContent) && array_key_exists("result_info", $responseContent)) {
+                                    $resultPage = $responseContent["result_info"]["page"];
+                                    $resultTotalPages = $responseContent["result_info"]["total_pages"];
+
+                                    // Get Result
+                                    $responseData = $responseContent["result"];
+
+                                    // Check if we need to paginate
+                                    if ($resultPage < $resultTotalPages) {
+                                        $responseData = array_merge($responseData, $this->sendRequest($requestURI, ++$page, $perPage));
+                                    }
+
+                                    return $responseData;
                                 }
                             }
                         }
