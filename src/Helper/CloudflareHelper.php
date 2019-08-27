@@ -47,7 +47,7 @@ class CloudflareHelper {
      * @return array
      * @throws CloudflareException
      */
-    public function getCloudflareDNSRecords(Zone $zone) {
+    public function getCloudflareDNSRecords(Zone $zone): array {
 
         // Get Request content
         $responseResult = $this->sendRequest("zones/" . $zone->getZoneID() . "/dns_records");

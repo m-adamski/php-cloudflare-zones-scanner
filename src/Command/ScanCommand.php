@@ -38,16 +38,16 @@ class ScanCommand extends Command {
     /**
      * {@inheritDoc}
      */
-    protected function configure() {
+    protected function configure(): void {
         $this
-            ->setName("cloudflare-scan")
+            ->setName("scan")
             ->setDescription("Scan Cloudflare Zones and DNS Records");
     }
 
     /**
      * {@inheritDoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output): ?int {
         $io = new SymfonyStyle($input, $output);
         $io->newLine();
 
@@ -95,6 +95,6 @@ class ScanCommand extends Command {
             $io->writeError($exception->getMessage());
         }
 
-        return;
+        return null;
     }
 }

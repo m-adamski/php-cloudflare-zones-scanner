@@ -11,7 +11,7 @@ class SymfonyStyle extends BaseSymfonyStyle {
      *
      * @param string $message
      */
-    public function taskStart(string $message) {
+    public function taskStart(string $message): void {
         $this->writeln(
             sprintf(" ➤ %s", $message)
         );
@@ -22,7 +22,7 @@ class SymfonyStyle extends BaseSymfonyStyle {
      *
      * @param string $message
      */
-    public function taskProcess(string $message) {
+    public function taskProcess(string $message): void {
         $this->writeln(
             sprintf(" .. %s", $message)
         );
@@ -32,7 +32,7 @@ class SymfonyStyle extends BaseSymfonyStyle {
      * Successfully finish previous task.
      * This function replace arrow icon from previous task with check icon.
      */
-    public function taskEnd() {
+    public function taskEnd(): void {
         $this->writeln("\r\033[K\033[1A\r <info>✔</info>");
     }
 
@@ -40,7 +40,7 @@ class SymfonyStyle extends BaseSymfonyStyle {
      * Finish previous task with error.
      * This function replace arrow icon from previous task with cross icon.
      */
-    public function taskError() {
+    public function taskError(): void {
         $this->writeln("\r\033[K\033[1A\r <fg=yellow>✘</fg=yellow>");
     }
 
@@ -51,7 +51,7 @@ class SymfonyStyle extends BaseSymfonyStyle {
      *
      * @param string $message
      */
-    public function taskSuccess(string $message = "Done") {
+    public function taskSuccess(string $message = "Done"): void {
         $this->writeln(
             sprintf(" <info>✔ %s</info>", $message)
         );
@@ -62,7 +62,7 @@ class SymfonyStyle extends BaseSymfonyStyle {
      *
      * @param string $message
      */
-    public function writeInfo(string $message) {
+    public function writeInfo(string $message): void {
         $this->writeln(
             sprintf(" <info>%s</info>", $message)
         );
@@ -73,7 +73,7 @@ class SymfonyStyle extends BaseSymfonyStyle {
      *
      * @param string $message
      */
-    public function writeError(string $message) {
+    public function writeError(string $message): void {
         $this->writeln(
             sprintf(" <error>%s</error>", $message)
         );
@@ -84,7 +84,7 @@ class SymfonyStyle extends BaseSymfonyStyle {
      *
      * @param string $message
      */
-    public function writeWarning(string $message) {
+    public function writeWarning(string $message): void {
         $this->writeln(
             sprintf(" <comment>%s</comment>", $message)
         );
